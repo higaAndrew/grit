@@ -21,9 +21,10 @@ import notifee, {
 
 const CHANNEL_ID = 'custom';
 
-const Home = ({ navigation, route }) => {
+const HomeScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const [permitted, setPermitted] = useState(false);
+
 
     async function bootstrap() {
         const initialNotification = await notifee.getInitialNotification();
@@ -39,7 +40,6 @@ const Home = ({ navigation, route }) => {
             );
         }
     }
-
     useEffect(() => {
         if (route.params?.post) {
 
@@ -121,48 +121,35 @@ const Home = ({ navigation, route }) => {
     }
 
     return (
-        <View style={styles.default}>
-            <Text>Grit</Text>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Home Screen</Text>
             <Button
-                title="Tasklist"
-                onPress={() => navigation.navigate('Tasklist')}
+                title="Go to Details"
+                onPress={() => navigation.navigate('Details', {
+                    itemId: 86,
+                    otherParam: 'anything you want here',
+                })}
             />
             <Button
-                title="Screentime"
-                onPress={() => navigation.navigate('Screentime')}
+                title="Create post"
+                onPress={() => navigation.navigate('Post')}
             />
-            <Button
-                title="Settings"
-                onPress={() => navigation.navigate('Settings')}
-            />
-            <Button
-                title="About"
-                onPress={() => navigation.navigate('About')}
-            />
+            <Text style={{margin:10}}>Post: {route.params?.post}</Text>
+            <SafeAreaProvider>
+                <SafeAreaView>
+                    <Text>Hello World</Text>
+                    <Button
+                        title="Press console log me"
+                        onPress={() => console.error('goo')}
+                    />
+                    <Button
+                        title="Do It!"
+                        onPress={() => onDisplayNotification()}
+                    />
+                </SafeAreaView>
+            </SafeAreaProvider>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: 'rgb(59, 108, 212)',
-        fontSize: 42,
-        fontWeight: '100',
-        textAlign: 'center',
-    },
-    default: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'start',
-        alignContent: 'space-between',
-    },
-});
-
-export default Home;
+export default HomeScreen;
