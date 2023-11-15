@@ -13,11 +13,11 @@ import {
 
 import styles from './styles/stylesheet'
 
-const Settings = ({ navigation, route }) => {
+const PreviousTasks = ({ navigation, route }) => {
     
     return (
         <View style={styles.default}>
-            <Text>Settings</Text>
+            <Text>Previous Tasks</Text>
             <Button
                 title='Back to Home'
                 onPress={() => navigation.navigate('Home')}
@@ -26,4 +26,4 @@ const Settings = ({ navigation, route }) => {
     );
 };
 
-export default Settings;
+export default PreviousTasks;

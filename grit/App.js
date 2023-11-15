@@ -18,12 +18,17 @@ import Home from './components/Home';
 import Tasklist from './components/Tasklist';
 import AddTask from './components/AddTask';
 import SelectedTask from './components/SelectedTask';
+import CompleteTask from './components/CompleteTask';
 import DeleteTask from './components/DeleteTask';
 import EditTask from './components/EditTask';
+import TaskSettings from './components/TaskSettings';
 import SaveChanges from './components/SaveChanges';
+import PreviousTasks from './components/PreviousTasks';
 import Screentime from './components/Screentime';
 import Settings from './components/Settings';
 import About from './components/About';
+
+import styles from './components/styles/stylesheet';
 
 const Stack = createStackNavigator();
 
@@ -47,18 +52,30 @@ const App = () => {
                     name="SelectedTask"
                     component={ SelectedTask }
                 />
-                {/* <Stack.Screen
+                <Stack.Screen
+                    name="CompleteTask"
+                    component={ CompleteTask }
+                />
+                <Stack.Screen
                     name="DeleteTask"
                     component={ DeleteTask }
-                /> */}
-                {/* <Stack.Screen
+                />
+                <Stack.Screen
                     name="EditTask"
                     component={ EditTask }
                 />
                 <Stack.Screen
+                    name="TaskSettings"
+                    component={ TaskSettings }
+                />
+                <Stack.Screen
                     name="SaveChanges"
                     component={ SaveChanges }
-                /> */}
+                />
+                <Stack.Screen
+                    name="PreviousTasks"
+                    component={ PreviousTasks }
+                />
                 <Stack.Screen
                     name="Screentime"
                     component={ Screentime }
@@ -75,20 +92,5 @@ const App = () => {
         </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: 'rgb(59, 108, 212)',
-        fontSize: 42,
-        fontWeight: '100',
-        textAlign: 'center',
-    },
-});
 
 export default App;

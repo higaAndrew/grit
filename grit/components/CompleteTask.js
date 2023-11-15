@@ -13,17 +13,17 @@ import {
 
 import styles from './styles/stylesheet'
 
-const Settings = ({ navigation, route }) => {
+const CompleteTask = ({ navigation, route }) => {
     
     return (
         <View style={styles.default}>
-            <Text>Settings</Text>
+            <Text>Complete Task</Text>
             <Button
-                title='Back to Home'
-                onPress={() => navigation.navigate('Home')}
+                title='Back to Selected Task'
+                onPress={() => navigation.navigate('SelectedTask')}
             />
         </View>
     );
 };
 
-export default Settings;
+export default CompleteTask;

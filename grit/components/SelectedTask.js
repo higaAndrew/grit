@@ -11,39 +11,32 @@ import {
     View,
 } from 'react-native';
 
+import styles from './styles/stylesheet'
+
 const SelectedTask = ({ navigation, route }) => {
-    
     return (
         <View style={styles.default}>
-            <Text>Task</Text>
+            <Text>Selected Task</Text>
             <Button
-                title="Back to Tasklist"
-                onPress={() => navigation.push('Tasklist')}
+                title='Complete Task'
+                onPress={() => navigation.navigate('CompleteTask')}
+            />
+            <Button
+                title='Edit Task'
+                onPress={() => navigation.navigate('EditTask', {
+                    prevScreen: 'SelectedTask',
+                })}
+            />
+            <Button
+                title='Delete Task'
+                onPress={() => navigation.navigate('DeleteTask')}
+            />
+            <Button
+                title='Back to Tasklist'
+                onPress={() => navigation.navigate('Tasklist')}
             />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: 'rgb(59, 108, 212)',
-        fontSize: 42,
-        fontWeight: '100',
-        textAlign: 'center',
-    },
-    default: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignContent: 'space-between',
-    },
-});
 
 export default SelectedTask;

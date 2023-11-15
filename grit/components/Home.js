@@ -19,6 +19,8 @@ import notifee, {
     EventType,
 } from '@notifee/react-native';
 
+import styles from './styles/stylesheet';
+
 const CHANNEL_ID = 'custom';
 
 const Home = ({ navigation, route }) => {
@@ -124,45 +126,27 @@ const Home = ({ navigation, route }) => {
         <View style={styles.default}>
             <Text>Grit</Text>
             <Button
-                title="Tasklist"
+                title='Tasklist'
                 onPress={() => navigation.navigate('Tasklist')}
             />
             <Button
-                title="Screentime"
+                title='Previous Tasks'
+                onPress={() => navigation.navigate('PreviousTasks')}
+            />
+            <Button
+                title='Screentime'
                 onPress={() => navigation.navigate('Screentime')}
             />
             <Button
-                title="Settings"
+                title='Settings'
                 onPress={() => navigation.navigate('Settings')}
             />
             <Button
-                title="About"
+                title='About'
                 onPress={() => navigation.navigate('About')}
             />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: 'rgb(59, 108, 212)',
-        fontSize: 42,
-        fontWeight: '100',
-        textAlign: 'center',
-    },
-    default: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'start',
-        alignContent: 'space-between',
-    },
-});
 
 export default Home;
