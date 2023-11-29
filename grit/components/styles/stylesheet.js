@@ -1,28 +1,30 @@
 import {
-  React,
-  useState,
-  useEffect,
-} from 'react';
-import {
-  Button,
   StyleSheet,
-  Text,
-  TextInput,
-  View,
 } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
+  input: {
+    width: '80%',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 10,
   },
-  text: {
-      color: 'rgb(59, 108, 212)',
-      fontSize: 42,
-      fontWeight: '100',
-      textAlign: 'center',
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  listItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: 'grey',
+    borderWidth: 1,
+    marginVertical: 10,
+    padding: 10,
+  },
+  screen: {
+    padding: 25,
   },
   default: {
       flex: 1,

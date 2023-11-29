@@ -1,31 +1,26 @@
 import {
     React,
-    useState,
-    useEffect,
+    useContext,
 } from 'react';
 import {
     Button,
-    StyleSheet,
+    FlatList,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 
-import styles from './styles/stylesheet'
+import AppContext from './AppContext';
+import styles from './styles/stylesheet';
 
-const SelectedTask = ({ navigation, route }) => {
+const SelectedTask = ({ navigation }) => {
+const context = useContext(AppContext);
+
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Selected Task</Text>
             <Button
                 title='Complete Task'
                 onPress={() => navigation.navigate('CompleteTask')}
-            />
-            <Button
-                title='Edit Task'
-                onPress={() => navigation.navigate('EditTask', {
-                    prevScreen: 'SelectedTask',
-                })}
             />
             <Button
                 title='Delete Task'
@@ -34,6 +29,21 @@ const SelectedTask = ({ navigation, route }) => {
             <Button
                 title='Back to Tasklist'
                 onPress={() => navigation.navigate('Tasklist')}
+            />
+            <FlatList
+                data={ context.tasks }
+                renderItem={({ item }) => (
+                    <View style={ styles.listItem }>
+                        <Text>{ item.value + '\n' }{ item.date }</Text>
+                        <Button
+                            title="Edit"
+                            onPress={() => navigation.navigate('EditTask', {
+                                prevScreen: 'SelectedTask',
+                            })}
+                        />
+                    </View>
+                )}
+                keyExtractor={ (item) => item.id }
             />
         </View>
     );

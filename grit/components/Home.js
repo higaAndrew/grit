@@ -12,6 +12,7 @@ import {
     View,
 } from 'react-native';
 
+// NOTIFEE
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import notifee, {
     AuthorizationStatus,
@@ -123,7 +124,7 @@ const Home = ({ navigation, route }) => {
     }
 
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Grit</Text>
             <Button
                 title='Tasklist'
