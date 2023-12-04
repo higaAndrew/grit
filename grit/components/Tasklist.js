@@ -1,6 +1,7 @@
 import {
     React,
     useContext,
+    useEffect,
  } from 'react';
 import {
     Button,
@@ -25,10 +26,6 @@ const Tasklist = ({ navigation }) => {
                 onPress={() => navigation.navigate('AddTask')}
             />
             <Button
-                title='Select This Task'
-                onPress={() => navigation.navigate('SelectedTask')}
-            />
-            <Button
                 title='Back to Home'
                 onPress={() => navigation.navigate('Home')}
             />
@@ -36,8 +33,12 @@ const Tasklist = ({ navigation }) => {
                 data={ context.tasks }
                 renderItem={({ item }) => (
                     <TouchableHighlight
-                        onPress={() => navigation.navigate('SelectedTask'
-                        )}
+                        onPress={() => navigation.navigate({
+                            name: 'SelectedTask',
+                            params: {selectedId: item.id},
+                            })
+                        }
+
                         underlayColor='lightgray'
                     >
                         <View style={ styles.listItem }>
@@ -47,20 +48,6 @@ const Tasklist = ({ navigation }) => {
                 )}
                 
             />
-            {/* <FlatList
-                data={ context.tasks }
-                renderItem={({ item }) => (
-                    <View style={ styles.listItem }>
-                        <Text>{ item.value + '\n' }{ item.date }</Text>
-                        <Button
-                            title="Select"
-                            onPress={() => navigation.navigate('SelectedTask')}
-                        />
-                    </View>
-                    
-                )}
-                keyExtractor={ (item) => item.id }
-            /> */}
         </View>
     );
 };

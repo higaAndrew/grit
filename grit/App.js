@@ -1,12 +1,18 @@
 import {
     React,
+    useEffect,
     useState,
 } from 'react';
 import moment from 'moment';
 
+// IMPORT NAVIGATION
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+// IMPORT ASYNCHRONOUS LOCAL STORAGE
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// IMPORT COMPONENTS
 import Home from './components/Home';
 import Tasklist from './components/Tasklist';
 import AddTask from './components/AddTask';
@@ -22,35 +28,72 @@ import Settings from './components/Settings';
 import About from './components/About';
 import AppContext from './components/AppContext';
 
+// CREATE STACK
 const Stack = createStackNavigator();
 
 const App = () => {
     // VARIABLE DEFINITIONS
     const [task, setTask] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     // FUNCTION DEFINITIONS
-    const addTask = () => {
-        if (task.trim().length > 0) {
-            setTasks([...tasks, {
-                id: Date.now().toString(),
-                value: task,
-                date: moment().format('MM/DD/YYYY'),
-            }]);
-            setTask('');
-        }
-    }
+
+    /* Outdated, use handleAddTask */
+    // const addTask = () => {
+    //     if (task.trim().length > 0) {
+    //         setTasks([...tasks, {
+    //             id: Date.now().toString(),
+    //             value: task,
+    //             date: moment().format('MM/DD/YYYY'),
+    //         }]);
+    //         setTask('');
+    //     }
+    // }
 
     const removeTask = (taskId) => {
         setTasks(tasks.filter((t) => t.id !== taskId));
+    };
+
+    // CREATE ASYNC LOCAL STORAGE
+    useEffect(() => {
+        // Load stored tasks on app start
+        loadTasksFromStorage();
+    }, []);
+
+    const loadTasksFromStorage = async () => {
+        try {
+            const storedTasks = await AsyncStorage.getItem('tasks');
+            if (storedTasks !== null) {
+                setTasks(JSON.parse(storedTasks));
+            }
+        } catch (error) {
+            console.error('Failed to load tasks.');
+        }
+    };
+
+    const handleAddTask = async () => {
+        const newTasks = ([...tasks, {
+            id: Date.now().toString(),
+            value: task,date: moment().format('MM/DD/YYYY'),
+        }]);
+        setTasks(newTasks);
+        setTask('');
+
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to save task.');
+        }
     };
 
     // CREATE CONTEXT
     const contextValue = {
         task, setTask,
         tasks, setTasks,
-        addTask,
-        removeTask,
+        /*addTask,*/ removeTask,
+        handleAddTask,
+        modalVisible, setModalVisible,
     };
 
     // RENDERING

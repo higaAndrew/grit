@@ -3,6 +3,12 @@ import {
 } from 'react-native';
 
 const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
   input: {
     width: '80%',
     borderColor: 'black',
@@ -22,6 +28,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: 10,
     padding: 10,
+  },
+  modal: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 30,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
   screen: {
     padding: 25,
