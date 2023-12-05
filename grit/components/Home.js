@@ -44,12 +44,6 @@ const Home = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        if (route.params?.post) {
-
-        }
-    }, [route.params?.post]);
-
-    useEffect(() => {
         bootstrap().then(() => setLoading(false));
     }, []);
 

@@ -35,25 +35,9 @@ const App = () => {
     // VARIABLE DEFINITIONS
     const [task, setTask] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [cTask, setCTask] = useState('');
+    const [cTasks, setCTasks] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-
-    // FUNCTION DEFINITIONS
-
-    /* Outdated, use handleAddTask */
-    // const addTask = () => {
-    //     if (task.trim().length > 0) {
-    //         setTasks([...tasks, {
-    //             id: Date.now().toString(),
-    //             value: task,
-    //             date: moment().format('MM/DD/YYYY'),
-    //         }]);
-    //         setTask('');
-    //     }
-    // }
-
-    const removeTask = (taskId) => {
-        setTasks(tasks.filter((t) => t.id !== taskId));
-    };
 
     // CREATE ASYNC LOCAL STORAGE
     useEffect(() => {
@@ -61,7 +45,13 @@ const App = () => {
         loadTasksFromStorage();
     }, []);
 
+    useEffect(() => {
+        // Load stored completed tasks on app start
+        loadCTasksFromStorage();
+    }, []);
+
     const loadTasksFromStorage = async () => {
+        // Load tasks for program
         try {
             const storedTasks = await AsyncStorage.getItem('tasks');
             if (storedTasks !== null) {
@@ -72,10 +62,25 @@ const App = () => {
         }
     };
 
+    const loadCTasksFromStorage = async () => {
+        // Load completed tasks
+        try {
+            const storedTasks = await AsyncStorage.getItem('cTasks');
+            if (storedTasks !== null) {
+                setCTasks(JSON.parse(storedTasks));
+            }
+        } catch (error) {
+            console.error('Failed to load completed tasks.');
+        }
+    };
+
     const handleAddTask = async () => {
+        // New way to add task and have it save
         const newTasks = ([...tasks, {
             id: Date.now().toString(),
-            value: task,date: moment().format('MM/DD/YYYY'),
+            value: task,
+            date: moment().format('MM/DD/YYYY'),
+            priority: 'Normal',
         }]);
         setTasks(newTasks);
         setTask('');
@@ -87,13 +92,96 @@ const App = () => {
         }
     };
 
+    const handleRemoveTask = async (selectedId) => {
+        // New way to delete task and have it save
+        const newTasks = (tasks.filter((t) => t.id !== selectedId));
+        setTasks(newTasks);
+
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to delete task.');    
+        }
+    };
+
+    const handleCompleteTask = async (selectedId) => {
+        // Remove task from tasklist and place in completed tasklist
+        const newTask = tasks.find(item => item.id === selectedId);
+        const newTasks = ([...cTasks, newTask])
+        setCTasks(newTasks);
+        setCTask('');
+
+        try {
+            await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to complete task.');
+        }
+        handleRemoveTask(selectedId);
+    };
+
+    const handleRestoreTask = async (selectedId) => {
+        // Remove task from tasklist and place in completed tasklist
+        const newTask = cTasks.find(item => item.id === selectedId);
+        const newTasks = ([...tasks, newTask])
+        setTasks(newTasks);
+        setTask('');
+
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to complete task.');
+        }
+        handleRemoveCTask(selectedId);
+    };
+
+    const handleRemoveCTask = async (selectedId) => {
+        const newTasks = (cTasks.filter((t) => t.id !== selectedId));
+        setCTasks(newTasks);
+
+        try {
+            await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to delete task.');    
+        }
+    };
+
+    const handleSaveEdit = async (selectedId, value, priority) => {
+        const data = tasks.findIndex(item => item.id === selectedId);
+
+        const newTasks = ([...tasks]);
+        newTasks[data].value = value;
+        newTasks[data].priority = priority;
+        setTasks(newTasks);
+        setTask('');
+
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to save task.');
+        }
+    }
+
+    const deleteAllTasks = async () => {
+        const newTasks = ([]);
+        setCTasks(newTasks);
+        try {
+            await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
+        } catch (error) {
+            console.error('Failed to complete task.');
+        }
+    };
+
     // CREATE CONTEXT
     const contextValue = {
         task, setTask,
         tasks, setTasks,
-        /*addTask,*/ removeTask,
-        handleAddTask,
+        cTask, setCTask,
+        cTasks, setCTasks,
         modalVisible, setModalVisible,
+        handleAddTask, handleRemoveTask,
+        handleCompleteTask, handleRestoreTask,
+        deleteAllTasks, handleRemoveCTask,
+        handleSaveEdit,
     };
 
     // RENDERING

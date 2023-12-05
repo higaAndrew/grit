@@ -18,7 +18,7 @@ import styles from './styles/stylesheet'
 const AddTask = ({ navigation }) => {
     const context = useContext(AppContext);
 
-    /* Adding text if a task has been added or not */
+    // Adding text if a task has been added or not
     const setTaskText = () => {
         if (context.tasks.length == 0) {
             return "Add your first task";
@@ -26,25 +26,13 @@ const AddTask = ({ navigation }) => {
         return "Add another task";
     };
 
-    // BUTTON DEFINITION
-    const addButton1 = () => {
-        context.handleAddTask;
-    };
-    const addButton2 = () => {
-        () => context.setModalVisible(true);
-    };
-    const addButton = () => {
-        addButton1();
-        addButton2();
-    };
-
     // RENDERING
     return (
         <View style={styles.screen}>
             <Text>Add a Task</Text>
             <Button
-                title='Back to Tasklist'
-                onPress={() => navigation.navigate('Tasklist')}
+                title='Cancel'
+                onPress={() => navigation.goBack()}
             />
             <View style={ styles.inputContainer }>
                 <TextInput

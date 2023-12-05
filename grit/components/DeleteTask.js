@@ -37,13 +37,13 @@ const DeleteTask = ({ navigation, route }) => {
             <Button
                 title='Yes, delete it!'
                 onPress={() => {
-                    context.removeTask(route.params?.selectedId)
+                    context.handleRemoveTask(route.params?.selectedId)
                     navigation.navigate('Tasklist')
                 }}
             />
             <Button
                 title='No, never mind'
-                onPress={() => navigation.navigate('SelectedTask')}
+                onPress={() => navigation.goBack()}
             />
         </View>
     );

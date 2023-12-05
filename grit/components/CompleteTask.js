@@ -1,7 +1,7 @@
 import {
     React,
     useState,
-    useEffect,
+    useContext,
 } from 'react';
 import {
     Button,
@@ -11,16 +11,23 @@ import {
     View,
 } from 'react-native';
 
+import AppContext from './AppContext';
 import styles from './styles/stylesheet'
 
 const CompleteTask = ({ navigation, route }) => {
-    
+    const context = useContext(AppContext);
+
+    const { selectedId } = route.params;
+
     return (
         <View style={styles.default}>
-            <Text>Complete Task</Text>
+            <Text>Have you completed this task?</Text>
             <Button
-                title='Back to Selected Task'
-                onPress={() => navigation.navigate('SelectedTask')}
+                title='Ya'
+                onPress={() => {
+                    context.handleCompleteTask(selectedId);
+                    navigation.navigate('Tasklist');
+                }}
             />
         </View>
     );

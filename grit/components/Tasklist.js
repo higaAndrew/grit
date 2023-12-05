@@ -27,7 +27,7 @@ const Tasklist = ({ navigation }) => {
             />
             <Button
                 title='Back to Home'
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.popToTop()}
             />
             <FlatList
                 data={ context.tasks }
@@ -35,7 +35,10 @@ const Tasklist = ({ navigation }) => {
                     <TouchableHighlight
                         onPress={() => navigation.navigate({
                             name: 'SelectedTask',
-                            params: {selectedId: item.id},
+                            params: {
+                                selectedId: item.id,
+                                list: 'tList',
+                            },
                             })
                         }
 
