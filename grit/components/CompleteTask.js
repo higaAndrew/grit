@@ -1,13 +1,10 @@
 import {
     React,
-    useState,
     useContext,
 } from 'react';
 import {
     Button,
-    StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 
@@ -15,12 +12,13 @@ import AppContext from './AppContext';
 import styles from './styles/stylesheet'
 
 const CompleteTask = ({ navigation, route }) => {
+    // VARIABLE DEFINITIONS
     const context = useContext(AppContext);
-
     const { selectedId } = route.params;
 
+    // RENDERING
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Have you completed this task?</Text>
             <Button
                 title='Ya'

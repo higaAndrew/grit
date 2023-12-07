@@ -5,15 +5,12 @@ import {
 } from 'react';
 import {
     Button,
-    SafeAreaView,
-    StyleSheet,
     Text,
     TextInput,
     View,
 } from 'react-native';
 
-// NOTIFEE
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// IMPORT NOTIFEE
 import notifee, {
     AuthorizationStatus,
     AndroidImportance,
@@ -117,6 +114,7 @@ const Home = ({ navigation, route }) => {
         });
     }
 
+    // RENDERING
     return (
         <View style={styles.screen}>
             <Text>Grit</Text>

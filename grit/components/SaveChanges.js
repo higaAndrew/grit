@@ -1,22 +1,18 @@
 import {
     React,
-    useState,
-    useEffect,
 } from 'react';
 import {
     Button,
-    StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 
 import styles from './styles/stylesheet'
 
-const SaveChanges = ({ navigation, route }) => {
-    
+const SaveChanges = ({ navigation }) => {
+    // RENDERING
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Save Changes</Text>
             <Button
                 title='Save Changes?'

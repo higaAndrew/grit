@@ -1,7 +1,7 @@
 import {
     React,
     useContext,
-    useEffect,
+    useState,
 } from 'react';
 import {
     Button,
@@ -10,14 +10,19 @@ import {
     View,
 } from 'react-native';
 
+// IMPORT BOUNCY CHECKBOX
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+
 import AppContext from './AppContext';
 import styles from './styles/stylesheet';
 
 const SelectedTask = ({ navigation, route }) => {
+    // VARIABLE DEFINITIONS
     const context = useContext(AppContext);
-
     const { selectedId, list } = route.params;
+    const [isChecked, setIsChecked] = useState(false);
 
+    // RENDERING
     return (
         <View style={styles.screen}>
             { list === 'tList' ? (
@@ -27,7 +32,12 @@ const SelectedTask = ({ navigation, route }) => {
                         data= { context.tasks.filter(item => item.id === selectedId) }
                         renderItem = {({ item }) => (
                             <View style={styles.listItem}>
-                                <Text>{ item.value + '\n' }{ item.date }</Text>
+                                <Text>{ item.value + '\n' }{ item.date + '\n' }{ 'Priority: ' + item.priority }</Text>
+                                <BouncyCheckbox
+                                    isChecked={true}
+                                    onPress={() => setIsChecked(!isChecked)}
+                                    text="Urgent"
+                                />
                             </View>
                         )}
                         keyExtractor={ (item) => item.id }
@@ -83,8 +93,15 @@ const SelectedTask = ({ navigation, route }) => {
                         }}
                     />
                     <Button
-                        title='Back to c'
-                        onPress={() => navigation.goBack()}
+                        title='Delete task'
+                        onPress={() => {
+                            context.handleRemoveCTask(selectedId);
+                            navigation.goBack();
+                        }}
+                    />
+                    <Button
+                        title='Back to completed tasks'
+                        onPress={ () => navigation.goBack() }
                     />
                 </View>
             )}

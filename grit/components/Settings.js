@@ -1,22 +1,18 @@
 import {
     React,
-    useState,
-    useEffect,
 } from 'react';
 import {
     Button,
-    StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 
 import styles from './styles/stylesheet'
 
-const Settings = ({ navigation, route }) => {
-    
+const Settings = ({ navigation }) => {
+    // RENDERING
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Settings</Text>
             <Button
                 title='Back to Home'

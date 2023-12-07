@@ -1,7 +1,6 @@
 import {
     React,
     useContext,
-    useEffect,
  } from 'react';
 import {
     Button,
@@ -10,11 +9,14 @@ import {
     View,
 } from 'react-native';
 
-import AppContext from './AppContext';
-import styles from './styles/stylesheet'
+// IMPORT TOUCH ABILITY
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
+import AppContext from './AppContext';
+import styles from './styles/stylesheet'
+
 const PreviousTasks = ({ navigation }) => {
+    // VARIABLE DEFINITIONS
     const context = useContext(AppContext);
 
     // RENDERING
@@ -25,12 +27,6 @@ const PreviousTasks = ({ navigation }) => {
                 title='Back to Home'
                 onPress={() => navigation.popToTop()}
             />
-            <Button
-                title='Delete all Tasks for testing purposes'
-                onPress={() => {
-                    context.deleteAllTasks()
-                }}
-            />
             <FlatList
                 data={ context.cTasks }
                 renderItem={({ item }) => (
@@ -40,11 +36,10 @@ const PreviousTasks = ({ navigation }) => {
                             params: {selectedId: item.id},
                             })
                         }
-
                         underlayColor='lightgray'
                     >
                         <View style={ styles.listItem }>
-                            <Text>{item.value + '\n' }{ item.date }</Text>
+                            <Text>{item.value + '\n' }{ item.date + '\n' }{ 'Priority: ' + item.priority }</Text>
                         </View>
                     </TouchableHighlight>
                 )}

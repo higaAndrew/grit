@@ -1,30 +1,28 @@
 import {
     React,
-    useState,
-    useEffect,
     useContext,
 } from 'react';
 import {
     Button,
     FlatList,
-    StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 
+// IMPORT PICKER SELECTION
 import RNPickerSelect from 'react-native-picker-select';
 
 import AppContext from './AppContext';
 import styles from './styles/stylesheet'
 
 const EditTask = ({ navigation, route }) => {
+    // VARIABLE DEFINITIONS
     const context = useContext(AppContext);
-
     const { selectedId } = route.params;
+    // RETRIEVING THE SELECTED TASK FROM TASKS
     const data = context.tasks.findIndex(item => item.id === selectedId);
 
-
+    // RENDERING
     return (
         <View style={styles.screen}>
             <Text>Edit Task</Text>
@@ -38,15 +36,18 @@ const EditTask = ({ navigation, route }) => {
                 keyExtractor={ (item) => item.id }
             />
             <RNPickerSelect
+                placeholder={{ }}
                 style={styles.pickerAndroid}
-                value={context.tasks[data].priority}
+                value={ context.tasks[data].priority }
                 onValueChange={(value) => {
-                    console.log('The priority of ' + context.tasks[data].value + ' has been set to ' + value)
-                    context.handleSaveEdit(selectedId, context.tasks[data].value, value)
+                    if (context.tasks[data].priority !== value) {
+                        console.log('The priority of ' + context.tasks[data].value + ' has been set to ' + value)
+                        context.handleSaveEdit(selectedId, context.tasks[data].value, value)
+                    }
                 }}
                 items={[
-                    { label: 'Urgent', value: 'Urgent' },
-                    { label: 'Normal', value: 'Normal' },
+                    { label: 'High', value: 'High' },
+                    { label: 'Normal (Default)', value: 'Normal' },
                     { label: 'Low', value: 'Low' },
                 ]}
             />

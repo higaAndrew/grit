@@ -8,9 +8,13 @@ import moment from 'moment';
 // IMPORT NAVIGATION
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 // IMPORT ASYNCHRONOUS LOCAL STORAGE
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// IMPORT DROPDOWN ALERTS
+import DropdownAlert, {
+    DropdownAlertData,
+    DropdownAlertType,
+} from 'react-native-dropdownalert';
 
 // IMPORT COMPONENTS
 import Home from './components/Home';
@@ -50,6 +54,7 @@ const App = () => {
         loadCTasksFromStorage();
     }, []);
 
+    // LOADING ASYNC STORAGE
     const loadTasksFromStorage = async () => {
         // Load tasks for program
         try {
@@ -74,16 +79,22 @@ const App = () => {
         }
     };
 
+    // HANDLER FUNCTIONS
     const handleAddTask = async () => {
-        // New way to add task and have it save
+        // Add and save task
         const newTasks = ([...tasks, {
             id: Date.now().toString(),
             value: task,
             date: moment().format('MM/DD/YYYY'),
             priority: 'Normal',
+            urgent: false,
         }]);
         setTasks(newTasks);
         setTask('');
+        showAlert(
+            'Info',
+            'Task Added',
+        );
 
         try {
             await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
@@ -92,10 +103,16 @@ const App = () => {
         }
     };
 
-    const handleRemoveTask = async (selectedId) => {
-        // New way to delete task and have it save
+    const handleRemoveTask = async (selectedId, complete) => {
+        // Delete and task and save
         const newTasks = (tasks.filter((t) => t.id !== selectedId));
         setTasks(newTasks);
+        if (!complete) {
+            showAlert(
+                'Info',
+                'Task Deleted',
+            );
+        }        
 
         try {
             await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
@@ -110,33 +127,49 @@ const App = () => {
         const newTasks = ([...cTasks, newTask])
         setCTasks(newTasks);
         setCTask('');
+        showAlert(
+            'Success',
+            'Task Completed',
+            'Good job!',
+        );
 
         try {
             await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
         } catch (error) {
             console.error('Failed to complete task.');
         }
-        handleRemoveTask(selectedId);
+        handleRemoveTask(selectedId, true);
     };
 
     const handleRestoreTask = async (selectedId) => {
-        // Remove task from tasklist and place in completed tasklist
+        // Remove task from completed tasklist and place in normal tasklist
         const newTask = cTasks.find(item => item.id === selectedId);
         const newTasks = ([...tasks, newTask])
         setTasks(newTasks);
         setTask('');
+        showAlert(
+            'Info',
+            'Task Restored',
+        );
 
         try {
             await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
         } catch (error) {
             console.error('Failed to complete task.');
         }
-        handleRemoveCTask(selectedId);
+        handleRemoveCTask(selectedId, true);
     };
 
-    const handleRemoveCTask = async (selectedId) => {
+    const handleRemoveCTask = async (selectedId, restore) => {
+        // Delete completed task and save
         const newTasks = (cTasks.filter((t) => t.id !== selectedId));
         setCTasks(newTasks);
+        if (!restore) {
+            showAlert(
+                'Info',
+                'Task Deleted',
+            )
+        }
 
         try {
             await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
@@ -146,28 +179,36 @@ const App = () => {
     };
 
     const handleSaveEdit = async (selectedId, value, priority) => {
+        // Save changes to task data
         const data = tasks.findIndex(item => item.id === selectedId);
-
         const newTasks = ([...tasks]);
         newTasks[data].value = value;
         newTasks[data].priority = priority;
         setTasks(newTasks);
         setTask('');
+        showAlert(
+            'Success',
+            'Changes Saved',
+        )
 
         try {
             await AsyncStorage.setItem('tasks', JSON.stringify(newTasks));
         } catch (error) {
             console.error('Failed to save task.');
         }
-    }
+    };
 
-    const deleteAllTasks = async () => {
-        const newTasks = ([]);
-        setCTasks(newTasks);
+    const showAlert = async (type, title, message) => {
+        // Give alert/notification
+        const alertType = DropdownAlertType[type] || '';
         try {
-            await AsyncStorage.setItem('cTasks', JSON.stringify(newTasks));
+            const alertData = await alert({
+                type: DropdownAlertType[type],
+                title: title,
+                message: message,
+            });
         } catch (error) {
-            console.error('Failed to complete task.');
+            console.error('Failed to alert.');
         }
     };
 
@@ -180,8 +221,8 @@ const App = () => {
         modalVisible, setModalVisible,
         handleAddTask, handleRemoveTask,
         handleCompleteTask, handleRestoreTask,
-        deleteAllTasks, handleRemoveCTask,
-        handleSaveEdit,
+        handleRemoveCTask, handleSaveEdit,
+        showAlert,
     };
 
     // RENDERING
@@ -242,6 +283,7 @@ const App = () => {
                         component={ About }
                     />
                 </Stack.Navigator>
+                <DropdownAlert alert={func => (alert = func)} />
             </NavigationContainer>
         </AppContext.Provider>
     );

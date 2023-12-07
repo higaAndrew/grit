@@ -1,7 +1,6 @@
 import {
     React,
     useContext,
-    useEffect,
 } from 'react';
 import {
     Button,
@@ -14,19 +13,16 @@ import AppContext from './AppContext';
 import styles from './styles/stylesheet'
 
 const DeleteTask = ({ navigation, route }) => {
+    // VARIABLE DEFINITIONS
     const context = useContext(AppContext);
-
-    useEffect(() => {
-        if (route.params?.selectedId) {
-
-        }
-    }, [route.params?.selectedId]);
+    const { selectedId } = route.params;
     
+    // RENDERING
     return (
-        <View style={styles.default}>
+        <View style={styles.screen}>
             <Text>Are you sure you want to delete this task?</Text>
             <FlatList
-                data= { context.tasks.filter(item => item.id === route.params?.selectedId) }
+                data= { context.tasks.filter(item => item.id === selectedId) }
                 renderItem = {({ item }) => (
                     <View style={styles.listItem}>
                         <Text>{item.value + '\n'}{item.date}</Text>
@@ -37,7 +33,7 @@ const DeleteTask = ({ navigation, route }) => {
             <Button
                 title='Yes, delete it!'
                 onPress={() => {
-                    context.handleRemoveTask(route.params?.selectedId)
+                    context.handleRemoveTask(selectedId)
                     navigation.navigate('Tasklist')
                 }}
             />
